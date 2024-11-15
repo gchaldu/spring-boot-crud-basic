@@ -1,7 +1,9 @@
 package net.youtics.backend.crudProductos.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "productos")
@@ -12,7 +14,8 @@ public class Producto {
     private Long id;
     @NotBlank
     private String nombre;
-    @NotBlank
+    @Min(value = 100, message = "El precio es obligatorio")
+    @NotNull(message = "El precio no puede ser nulo")
     private Double precio;
 
     public Producto() {
