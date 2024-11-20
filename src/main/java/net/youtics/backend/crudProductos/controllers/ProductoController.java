@@ -16,7 +16,7 @@ public class ProductoController {
     @Autowired
     ProductoServiceManager productoServiceManager;
 
-    @GetMapping("/")
+    @GetMapping()
     public List<Producto> listarProductos(){
         return this.productoServiceManager.get();
     }
@@ -35,7 +35,7 @@ public class ProductoController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<Producto> save(@RequestBody Producto producto){
         Producto newProducto = productoServiceManager.save(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProducto);
