@@ -52,15 +52,28 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> updateProducto(@RequestBody Producto producto,
-                                                   @PathVariable Long id)
-    {
+    public ResponseEntity<?> updateProducto(@PathVariable Long id,
+                                            @RequestBody Producto producto) {
+        // Verifica si el producto existe
         Optional<Producto> productoOptional = this.productoServiceManager.getById(id);
 
-        if(productoOptional.isPresent()){
-            return ResponseEntity.status(201).body(productoOptional.orElseThrow());
+        if (productoOptional.isPresent()) {
+            Producto existingProducto = productoOptional.get();
+
+            // Actualiza los valores del producto existente con los nuevos datos
+            existingProducto.setNombre(producto.getNombre());
+            existingProducto.setPrecio(producto.getPrecio());
+            // Agrega más campos si los hay
+
+            // Llama al servicio para actualizar el producto
+            Optional<Producto> optionalProducto = this.productoServiceManager.update(id, existingProducto);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalProducto.get());
         }
+
+        // Si el producto no existe, devuelve un 404
         return ResponseEntity.notFound().build();
     }
+
 
 }
